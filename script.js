@@ -8,6 +8,11 @@ const count = 10;
 const apiKey = "c_HNVEGfgMEp0tn9YF5-BlQIxlNYNmCSlYQHOUeiuog";
 const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
 
+// Check if all images were loaded
+function imageLoaded() {
+  console.log("image loaded");
+}
+
 // Helper function to set attributes on DOM elements
 function setAttributes(element, attributes) {
   for (const key in attributes) {
@@ -37,6 +42,8 @@ function displayPhotos() {
       alt: photo.alt_description,
       title: photo.alt_description,
     });
+    // Event listener check when each is finished loading
+    img.addEventListener("load", imageLoaded);
     //img inside <a>, then put both inside image container
     item.appendChild(img);
     imageContainer.appendChild(item);
@@ -54,6 +61,17 @@ async function getPhotos() {
     //catch error
   }
 }
+
+//Check to see if scrolling near bottom
+window.addEventListener("scroll", () => {
+  if (
+    window.innerHeight + window.scrollY >=
+    document.body.offsetHeight - 1000
+  ) {
+    getPhotos();
+    console.log("load");
+  }
+});
 
 // On Load
 getPhotos();
